@@ -7,16 +7,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "client": "cd my-react-app && npm run dev",
-    "server": "node index.js"
+    "server": "nodemon index.js"
   },
   "author": "aicha",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "serve-handler": "^6.1.5",
+    "socket.io": "^4.7.5",
     "ws": "^8.18.0"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4"
   }
 }

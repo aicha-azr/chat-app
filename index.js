@@ -1,25 +1,20 @@
-import { createServer } from 'http';
-import staticHandler from 'serve-handler';
-import ws, { WebSocketServer } from 'ws';
-//serve static folder
-const server = createServer((req, res) => {   // (1)
-    return staticHandler(req, res, { public: 'public' })
-});
-const wss = new WebSocketServer({ server }) // (2)
-wss.on('connection', (client) => {
-    console.log('Client connected !')
-    client.on('message', (msg) => {    // (3)
-        console.log(`Message:${msg}`);
-        broadcast(msg)
-    })
-})
-function broadcast(msg) {       // (4)
-    for (const client of wss.clients) {
-        if (client.readyState === ws.OPEN) {
-            client.send(msg)
-        }
+const io = require('socket.io')(3000, {
+    cors: {
+      origin: '*', // Allows all origins. You can restrict this to specific origins if needed.
+      methods: ['GET', 'POST']
     }
-}
-server.listen(process.argv[2] || 8080, () => {
-    console.log(`server listening...`);
-})
+  });
+  const users = {}
+  io.on('connection', socket => {
+    console.log('new user');
+    socket.emit('chat-message', 'hello world!');
+    socket.on('send-chat-message', message =>{
+        console.log(message)
+        socket.broadcast.emit('chat-message', { message: message, name: users[socket.id] })
+    })
+    socket.on('new-user', name =>{
+        users[socket.id] = name
+        socket.broadcast.emit('user-connecton', message)
+    })
+  });
+  
