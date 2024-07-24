@@ -16,6 +16,11 @@ io.on('connection', socket => {
 
   socket.on('new-user', name => {
     users[socket.id] = name;
-    socket.broadcast.emit('user-connection', name); // Correction ici
+    socket.broadcast.emit('user-connection', name); 
+  });
+
+  socket.on('disconnect', () => {
+    socket.broadcast.emit('user-disconnected', users[socket.id]); 
+    delete users[socket.id]; 
   });
 });
