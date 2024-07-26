@@ -13,6 +13,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+const users = {};
 const io = socketIo(server, {
   cors: {
     origin: "http://localhost:5173",
@@ -23,20 +24,22 @@ const io = socketIo(server, {
 io.on('connection', (socket) => {
   console.log('User connected');
 
-  // Listen for incoming messages
-  socket.on('message', (message) => {
-    console.log('Message:', message);
-    // Broadcast the message to all connected clients
-    socket.broadcast.emit('display-message', message);
-    socket.emit('user-message', message);
-  });
-  socket.on('new-user', name =>{ 
+  socket.on('new-user', (name) => {
+    users[socket.id] = name;
     socket.broadcast.emit('user-connection', name);
   });
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
+
+  socket.on('message', (message) => {
+    const userMessage = { message, name: users[socket.id] };
+    socket.broadcast.emit('display-message', userMessage);
+    socket.emit('user-message', userMessage);
   });
 
+  socket.on('disconnect', () => {
+    const name = users[socket.id];
+    delete users[socket.id];
+    console.log('User disconnected');
+  });
 });
 
 const PORT = 5000;
