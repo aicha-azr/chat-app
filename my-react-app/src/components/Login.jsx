@@ -1,7 +1,7 @@
 // Login.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import socket from "./Socket";
+// import socket from "./Socket";
 
 
 const Login = () => {
@@ -10,7 +10,7 @@ const Login = () => {
 
   const handleEnter = (e) => {
     e.preventDefault();
-    socket.emit('new-user', name); // Emit the new-user event
+    // socket.emit('new-user', name); // Emit the new-user event
     navigate('/room', { state: { name } });
   };
 

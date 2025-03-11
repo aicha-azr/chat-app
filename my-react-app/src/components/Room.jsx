@@ -1,7 +1,7 @@
 // Room.js
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import socket from "./Socket";
+// import socket from "./Socket";
 
 const Room = () => {
   const location = useLocation();
@@ -13,41 +13,41 @@ const Room = () => {
   const userName = location.state.name;
   const messagesEndRef = useRef(null);
 
-  useEffect(() => {
-    socket.on('user-connection', (name) => {
-      setEnterMessage(`${name} connected`);
-      setUsers((prevUsers) => new Map(prevUsers).set(name, name));
-    });
-    socket.on('user-disconnected', name => {
-      setEnterMessage(`${name} disconnected`);
-      setUsers((prevUsers) => {
-        const newUsers = new Map(prevUsers);
-        newUsers.delete(name);
-        return newUsers;
-      });
-    });
-    socket.on('display-message', (message) => {
-      setTheMessages((prevMessages) => [...prevMessages, message]);
-    });
-    socket.on('users', (user) => {
-      setUsers((prevUsers) => new Map(prevUsers).set(user, user));
-    });
-    socket.on('user-message', (message) => {
-      setTheMessages((prevMessages) => [...prevMessages, message]);
-    });
+  // useEffect(() => {
+  //   socket.on('user-connection', (name) => {
+  //     setEnterMessage(`${name} connected`);
+  //     setUsers((prevUsers) => new Map(prevUsers).set(name, name));
+  //   });
+  //   socket.on('user-disconnected', name => {
+  //     setEnterMessage(`${name} disconnected`);
+  //     setUsers((prevUsers) => {
+  //       const newUsers = new Map(prevUsers);
+  //       newUsers.delete(name);
+  //       return newUsers;
+  //     });
+  //   });
+  //   socket.on('display-message', (message) => {
+  //     setTheMessages((prevMessages) => [...prevMessages, message]);
+  //   });
+  //   socket.on('users', (user) => {
+  //     setUsers((prevUsers) => new Map(prevUsers).set(user, user));
+  //   });
+  //   socket.on('user-message', (message) => {
+  //     setTheMessages((prevMessages) => [...prevMessages, message]);
+  //   });
 
-    return () => {
-      socket.off('user-connection');
-      socket.off('user-disconnected');
-      socket.off('display-message');
-      socket.off('user-message');
-      socket.off('users');
-    };
-  }, []);
+  //   return () => {
+  //     socket.off('user-connection');
+  //     socket.off('user-disconnected');
+  //     socket.off('display-message');
+  //     socket.off('user-message');
+  //     socket.off('users');
+  //   };
+  // }, []);
 
   const sendMessage = () => {
     if (currentMessage) {
-      socket.emit('message', currentMessage);
+      // socket.emit('message', currentMessage);
       setCurrentMessage('');
     }
   };
