@@ -1,10 +1,13 @@
 const express = require('express');
 const app = express();
-require("dotenv").config();
-const { supabase } = require('./config/supabase');
 const cors = require('cors');
-app.use(cors());
+require("dotenv").config();
 app.use(express.json());
+app.use(cors());
+const { supabase } = require('./config/supabase');
+const authRoutes = require('./router/authRoutes');
+
+app.use('/auth', authRoutes);
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
