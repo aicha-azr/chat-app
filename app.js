@@ -8,9 +8,11 @@ const { supabase } = require('./config/supabase');
 const authRoutes = require('./router/authRoutes');
 const usersRoutes = require('./router/userRoutes');
 const conversationRoutes = require('./router/conversationRoutes');
+const messageRoutes = require('./router/messageRoutes');
 app.use('/auth', authRoutes);
 app.use('/users', usersRoutes);
 app.use('/conversations', conversationRoutes);
+app.use('/messages', messageRoutes);
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });

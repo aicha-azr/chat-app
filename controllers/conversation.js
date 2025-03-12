@@ -1,3 +1,5 @@
+const { supabase } = require("../config/supabase");
+
 Conversations = {
   getAll: async (req, res) => {
     try {
@@ -6,7 +8,7 @@ Conversations = {
         return res.status(400).json(response.error);
       }
     } catch (err) {
-      console.error(err.message);
+      return res.status(500).json({error: err});
     }
   },
   getOne: async (req, res) => {
@@ -24,7 +26,7 @@ Conversations = {
       }
       return res.status(200).json(response.data);
     } catch (err) {
-      console.error(err.message);
+      return res.status(500).json({error: err});
     }
   },
   createOne: async (req, res) => {
@@ -35,7 +37,7 @@ Conversations = {
         }
         return res.status(200).json(response.data);
         } catch (err) {
-        console.error(err.message);
+          return res.status(500).json({error: err});
         }
     }
 };

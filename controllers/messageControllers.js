@@ -1,17 +1,17 @@
 const { supabase } = require("../config/supabase");
 
-const users = {
-    getUsers: async(req,res)=>{
+const Messages = {
+    getMessages: async (req, res) => {
         try{
             const response = await supabase
-            .from('users')
-            .select('*');
+            .from("messages")
+            .select("*")
             if(response.error){
-                return res.status(400).json(response.error);
+                return res.status(400).json({error: response.error.message});
             }
             return res.status(200).json(response.data);
-        }catch(err){
-            return res.status(500).json({error: err});
+        }catch(error){
+           return res.status(500).json({error: error});
         }
     },
     getOne : async(req,res)=>{
@@ -21,7 +21,7 @@ const users = {
         }
         try{
             const response = await supabase
-            .from('users')
+            .from('messages')
             .select('*')
             .eq('id',id);
             if(response.error){
@@ -32,16 +32,9 @@ const users = {
             return res.status(500).json({error: err});
         }
     },
-    updateOne : async(req,res)=>{
-        const {id} = req.params;
-        if(!id){
-            return res.status(400).json({error:'Please provide an id'});
-        }
+    addOne : async(req,res)=>{
         try{
-            const response = await supabase
-            .from('users')
-            .update(req.body)
-            .eq('id',id);
+            const response = await supabase.from("messages").insert(req.body);
             if(response.error){
                 return res.status(400).json(response.error);
             }
@@ -49,6 +42,6 @@ const users = {
         }catch(err){
             return res.status(500).json({error: err});
         }
-    },
+    }
 }
-module.exports = users;
+module.exports = Messages;
